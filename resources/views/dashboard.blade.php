@@ -1,12 +1,13 @@
 @extends('layouts.custom')
+
+@section('title', 'Dashboard- GEC')
+
 @section('content')
 
 <!-- Top Action -->
 <div class="flex justify-end mb-6">
-    <a href="{{ route('ajouter') }}" class="bg-indigo-700 p-3 text-white rounded-lg flex items-center space-x-2 hover:bg-indigo-800 transition">
-        <i class="fa-solid fa-plus"></i>
-        <span>Ajouter Courrier</span>
-    </a>
+           <a href="{{ route('ajouter') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Nouveau courrier</a>
+
 </div>
 
 <!-- Statistics -->

@@ -1,4 +1,6 @@
 @extends('layouts.custom')
+@section('title', 'Créer un courrier- GEC')
+
 @section('content')
 
 <div class="flex items-center justify-center bg-gray-100 overflow-hidden">
@@ -99,5 +101,4 @@
         </form>
     </div>
 </div>
-
 @endsection

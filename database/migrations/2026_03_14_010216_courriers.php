@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('date_envoi')->nullable();
             $table->date('date_reception')->nullable();
             $table->enum('statut', ['En cours','Traité','Archivé']);
-            $table->string('image');
+        $table->string('image')->nullable()->change();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             
             $table->timestamps();

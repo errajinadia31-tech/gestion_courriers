@@ -75,7 +75,7 @@
                 Register
             </button>
             <div class="flex items-center justify-end mt-4">
-                <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">
+                <a href="{{ route('login') }}" class="text-sm text-blue-700 hover:text-blue-700 hover:underline">
                     Already registered?
                 </a>
             </div>

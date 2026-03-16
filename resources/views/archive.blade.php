@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen p-6">
+@extends('layouts.custom')
+
+@section('title', 'Archive- GEC')
+
+@section('content')
 
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center">Archives</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">Archives</h1>
 
         @if(session('success'))
             <div class="bg-green-100 text-green-700 p-3 rounded mb-4 text-center">
@@ -20,7 +16,7 @@
         <div class="overflow-x-auto">
             <table class="w-full bg-white rounded shadow">
                 <thead>
-                    <tr class="bg-gray-200 text-left">
+                    <tr class="bg-blue-600 text-left">
                         <th class="p-3">Objet</th>
                         <th class="p-3">Archivé par</th>
                         <th class="p-3">Date d'archivage</th>
@@ -57,5 +53,4 @@
         </div>
     </div>
 
-</body>
-</html>
+@endsection
