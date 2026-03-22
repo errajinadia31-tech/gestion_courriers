@@ -4,33 +4,32 @@
 
 @section('content')
 
-<!-- Top Action -->
 <div class="flex justify-end mb-6">
            <a href="{{ route('ajouter') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Nouveau courrier</a>
 
 </div>
 
-<!-- Statistics -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h3 class="text-gray-500 mb-2">Courriers Départ</h3>
+        <a href="{{route('courrier') }}">Courriers Départ</a>
         <p class="text-3xl font-bold text-indigo-600">{{ $courriersDepart }}</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h3 class="text-gray-500 mb-2">Courriers Arrivés</h3>
+        <a href="{{ route('courrier')}}">Courriers Arrivés</a>
         <p class="text-3xl font-bold text-green-600">{{ $courriersArrives }}</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h3 class="text-gray-500 mb-2">Transmissions</h3>
+        
+        <a href="{{ route('courrier')}}">Transmissions</a>
         <p class="text-3xl font-bold text-yellow-500">{{ $transmissions }}</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h3 class="text-gray-500 mb-2">Archives</h3>
+        <a href="{{ route('archive')}}">Archives</a>
         <p class="text-3xl font-bold text-gray-700">{{ $archives }}</p>
     </div>
 </div>
 
-<!-- Last Courriers -->
+
 <div class="bg-white rounded-lg shadow p-6">
     <h2 class="text-xl font-bold mb-4">Derniers Courriers</h2>
     <div class="overflow-x-auto">

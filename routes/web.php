@@ -31,18 +31,24 @@ Route::middleware('auth')->group(function () {
 });
 
 // Courrier
-
 Route::middleware('auth')->group(function () {
+
+    
     Route::get('/courrier', [CourrierController::class, 'index'])->name('courrier');
-    Route::get('/ajouter', [CourrierController::class, 'create'])->name('ajouter');
-    Route::post('/courrier/store', [CourrierController::class, 'store'])->name('courrier.store');
 
-//      Route::get('/courrier/{courrier}', [CourrierController::class, 'show'])->name('courriers.show');
-    Route::get('/courrier/{courrier}/edit', [CourrierController::class, 'edit'])->name('courriers.edit');
-//      Route::put('/courrier/{courrier}', [CourrierController::class, 'update'])->name('courriers.update');
-//      Route::delete('/courrier/{courrier}', [CourrierController::class, 'destroy'])->name('courriers.destroy');
+    Route::get('create', [CourrierController::class, 'create'])->name('courrier.create');
 
- });
+   
+    Route::post('/courrier', [CourrierController::class, 'store'])->name('courrier.store');
+
+Route::get('/courrier/{courrier}', [CourrierController::class, 'show'])->name('show.view');
+
+Route::delete('/courrier/{id}', [CourrierController::class, 'destroy'])->name('courrier.destroy');
+
+Route::get('/courrier/{id}/edit', [CourrierController::class, 'edit'])->name('courrier.edit');
+
+Route::put('/courrier/{id}', [CourrierController::class, 'update'])->name('courrier.update');
+});
 
 // Layout
 Route::get('custom', [LayoutController::class, 'layout'])->name('layout');

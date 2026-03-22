@@ -3,17 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Courrier extends Model
 {
+    protected $primaryKey = 'id_courrier'; 
+
+    public $incrementing = true; 
+    protected $keyType = 'int'; 
+
     protected $fillable = [
-        'reference',
-        'objet',
-        'type',
-        'date_envoi',
-        'date_reception',
-        'statut',
-        'user_id',
-        'image'
+        'reference', 'objet', 'type', 'date', 'type_document',
+        'expediteur', 'destinataire_externe', 'mode_envoi', 'file', 'user_id'
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'id_courrier'; 
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

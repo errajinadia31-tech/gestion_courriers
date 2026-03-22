@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('is_admin')->default(false);
             $table->foreignId('role_id')->nullable()->constrained('roles', 'id_role')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
@@ -21,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('utilisateurs');
     }
 };

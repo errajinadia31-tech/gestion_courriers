@@ -8,19 +8,33 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('courriers', function (Blueprint $table) {
-            $table->id('id_courrier');
-            $table->string('reference');
-            $table->string('objet');
-            $table->enum('type', ['Entrant','Sortant','Interne']);
-            $table->date('date_envoi')->nullable();
-            $table->date('date_reception')->nullable();
-            $table->enum('statut', ['En cours','Traité','Archivé']);
-        $table->string('image')->nullable()->change();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            
-            $table->timestamps();
-        });
+Schema::create('courriers', function (Blueprint $table) {
+    $table->id('id_courrier');
+
+    $table->string('reference');
+    $table->string('objet');
+
+    $table->enum('type', ['arrivee','depart']);
+
+    $table->date('date');
+
+    $table->string('type_document')->nullable();
+
+    $table->string('expediteur')->nullable();
+
+ 
+    $table->string('destinataire_externe')->nullable();
+    $table->string('mode_envoi')->nullable();
+
+
+    $table->string('file')->nullable();
+
+    $table->enum('statut', ['En cours','Traité','Archivé'])->default('En cours');
+
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+    $table->timestamps();
+});
     }
 
     public function down(): void

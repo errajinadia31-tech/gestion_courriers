@@ -14,8 +14,10 @@ class DashboardController extends Controller
     {
         // Statistics
         $users = User::count();
-        $courriersDepart = Courrier::where('type', 'Sortant')->count();
-        $courriersArrives = Courrier::where('type', 'Entrant')->count();
+
+        // Correction des types selon ce qui est stocké dans la DB
+        $courriersDepart = Courrier::where('type', 'depart')->count();
+        $courriersArrives = Courrier::where('type', 'arrivee')->count();
         $transmissions = Transmission::count();
         $archives = Archive::count();
 
