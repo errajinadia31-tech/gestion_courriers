@@ -14,8 +14,18 @@ class CourrierController extends Controller
     {
         $this->middleware('auth');
     }
-public function index() {
-    $courriers = Courrier::paginate(10); 
+public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    $courriers = Courrier::when($search, function ($query, $search) {
+        $query->where(function($q) use ($search) {
+            $q->where('reference', 'like', "%$search%")
+              ->orWhere('destinataire_externe', 'like', "%$search%")
+              ->orWhere('expediteur', 'like', "%$search%");
+        });
+    })->paginate(50);
+
     return view('courrier', compact('courriers'));
 }
     public function store(Request $request){
@@ -82,7 +92,6 @@ public function edit($id)
     $courrier = Courrier::where('id_courrier', $id)->firstOrFail();
     return view('edit_courrier', compact('courrier'));
 }
-
 public function update(Request $request, $id)
 {
     $courrier = Courrier::where('id_courrier', $id)->firstOrFail();
@@ -93,6 +102,11 @@ public function update(Request $request, $id)
         'type' => 'required|in:arrivee,depart',
         'date' => 'required|date',
         'statut' => 'required|in:En cours,Traité,Archivé',
+        'type_document' => 'nullable|string',
+        'expediteur' => 'nullable|string',
+        'destinataire_externe' => 'nullable|string',
+        'mode_envoi' => 'nullable|in:email,poste',
+        'user_id' => 'nullable|exists:users,id',
         'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
     ]);
 
@@ -101,6 +115,13 @@ public function update(Request $request, $id)
             Storage::disk('public')->delete($courrier->file);
         }
         $data['file'] = $request->file('file')->store('courriers', 'public');
+    }
+
+    if ($data['type'] === 'arrivee') {
+        $data['destinataire_externe'] = null;
+        $data['mode_envoi'] = null;
+    } elseif ($data['type'] === 'depart') {
+        $data['expediteur'] = null;
     }
 
     $courrier->update($data);
