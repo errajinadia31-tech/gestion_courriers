@@ -6,6 +6,7 @@ use App\Http\Controllers\CourrierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LayoutController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TransmissionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,6 +54,15 @@ Route::put('/courrier/{id}', [CourrierController::class, 'update'])->name('courr
 // Layout
 Route::get('custom', [LayoutController::class, 'layout'])->name('layout');
 Route::get('/ajouter', [LayoutController::class, 'ajouter'])->name('ajouter');
+//  Archive
+Route::put('/courrier/{courrier}/archive', [CourrierController::class, 'archive'])
+    ->name('courrier.archive');
+    Route::put('/courrier/{courrier}/restore', [CourrierController::class, 'restore'])->name('courrier.restore');
 
 
+Route::middleware('auth')->group(function () {
+Route::get('/transmissions', [TransmissionController::class, 'list'])->name('transmissions.list');    Route::get('/transmissions/create', [TransmissionController::class, 'create'])->name('transmissions.create');
+    Route::post('/transmissions', [TransmissionController::class, 'store'])->name('transmissions.store');
+    Route::delete('/transmissions/{transmission}', [TransmissionController::class, 'destroy'])->name('transmissions.destroy');
+});
 require __DIR__.'/auth.php';

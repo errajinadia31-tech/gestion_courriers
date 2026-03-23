@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string('emplacement');
             $table->foreignId('courrier_id')->constrained('courriers','id_courrier')->cascadeOnDelete();
             $table->timestamps();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
         });
     }
 

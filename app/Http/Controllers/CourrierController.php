@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive;
 use Illuminate\Http\Request;
 use App\Models\Courrier;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,7 +27,6 @@ public function index(Request $request)
               ->orWhere('expediteur', 'like', "%$search%");
         });
     })->paginate(50);
-
     return view('courrier', compact('courriers'));
 }
     public function store(Request $request){
@@ -127,5 +128,43 @@ public function update(Request $request, $id)
     $courrier->update($data);
 
     return redirect()->route('courrier')->with('success', 'Courrier modifié avec succès');
+}
+
+public function archive(Courrier $courrier)
+{
+
+     if (Archive::where('courrier_id', $courrier->id_courrier)->exists()) {
+        return redirect()->back()->with('error', 'Ce courrier est déjà archivé');
+    }
+
+        Archive::create([
+            'date_archivage' => Carbon::now(),
+            'emplacement' => 'Armoire A', 
+            'courrier_id' => $courrier->id_courrier,
+            'user_id' => Auth::id(),
+        ]);
+
+           $courrier->update([
+        'statut' => 'Archivé',
+    ]);
+    
+
+    return redirect()->route('archive')->with('success', 'Courrier archivé avec succès');
+    }
+public function restore(Courrier $courrier)
+{
+    $archive = Archive::where('courrier_id', $courrier->id_courrier)->first();
+
+    if (!$archive) {
+        return redirect()->back()->with('error', 'Ce courrier n\'est pas archivé');
+    }
+
+    $archive->delete();
+
+    $courrier->update([
+        'statut' => 'En cours',
+    ]);
+
+    return redirect()->route('courrier')->with('success', 'Courrier restauré avec succès');
 }
 }

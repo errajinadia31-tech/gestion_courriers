@@ -26,4 +26,8 @@ class Courrier extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function transmissions()
+{
+    return $this->hasMany(Transmission::class, 'courrier_id', 'id_courrier');
+}
 }

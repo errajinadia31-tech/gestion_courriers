@@ -2,40 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Transmission;
-use App\Models\Courrier;
-use App\Models\User;
+use Illuminate\Http\Request;
 
 class TransmissionController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        $transmissions = Transmission::latest()->paginate(10);
-        return view('transmissions.index', compact('transmissions'));
+        $this->middleware('auth');
     }
 
-    public function create()
+    // القائمة ديال كل الـ transmissions
+    public function list()
     {
-        $courriers = Courrier::all();
-        $users = User::all();
-        return view('transmissions.create', compact('courriers', 'users'));
+        $transmissions = Transmission::with(['courrier', 'expediteur', 'destinataire'])
+            ->latest()
+            ->paginate(10);
+
+        return view('transmissions.list', compact('transmissions'));
     }
 
+    // إنشاء transmission جديد
     public function store(Request $request)
     {
-        $request->validate([
-            'courrier_id' => 'required|exists:courriers,id',
-            'to_user_id' => 'required|exists:users,id',
+        $data = $request->validate([
+            'courrier_id' => 'required|exists:courriers,id_courrier',
+            'expediteur_id' => 'required|exists:users,id',
+            'destinataire_id' => 'required|exists:users,id',
+            'date_transmission' => 'required|date',
+            'commentaire' => 'nullable|string',
         ]);
 
-        Transmission::create([
-            'courrier_id' => $request->courrier_id,
-            'from_user_id' => auth()->id(),
-            'to_user_id' => $request->to_user_id,
-            'status' => 'en cours',
-        ]);
+        Transmission::create($data);
 
-        return redirect()->route('transmissions.index')->with('success', 'Transmission créée!');
+        return redirect()->route('transmissions.list')->with('success', 'Transmission créée avec succès!');
+    }
+
+    // حذف transmission
+    public function destroy(Transmission $transmission)
+    {
+        $transmission->delete();
+        return back()->with('success', 'Transmission supprimée!');
     }
 }

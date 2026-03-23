@@ -12,12 +12,13 @@ class Archive extends Model
     protected $primaryKey = 'id_archive';
 
     protected $fillable = [
-        'courrier_id',
-        'archived_by',
         'date_archivage',
-        'emplacement'
+        'emplacement',
+        'courrier_id',
+        'user_id',
     ];
 
+    // العلاقة مع Courrier
     public function courrier()
     {
         return $this->belongsTo(Courrier::class, 'courrier_id', 'id_courrier');
@@ -25,6 +26,6 @@ class Archive extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'archived_by');
+        return $this->belongsTo(User::class, 'user_id'); 
     }
 }

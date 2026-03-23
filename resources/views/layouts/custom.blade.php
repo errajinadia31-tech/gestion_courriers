@@ -27,7 +27,7 @@
             <a href="{{ route('courrier') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('courriers.*') ? 'bg-indigo-800' : '' }}">
                 <i class="fa-solid fa-file ml-2"></i> Courriers
             </a>
-            <a href="#" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('transmissions.*') ? 'bg-indigo-800' : '' }}">
+            <a href="{{ route('transmissions.list') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('transmissions.*') ? 'bg-indigo-800' : '' }}">
                 <i class="fa-solid fa-tower-broadcast ml-2"></i> Transmissions
             </a>
             <a href="{{ route('archive') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('archive') ? 'bg-indigo-800' : '' }}">

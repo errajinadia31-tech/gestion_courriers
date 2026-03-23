@@ -20,7 +20,7 @@
     </div>
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
         
-        <a href="{{ route('courrier')}}">Transmissions</a>
+        <a href="{{ route('transmissions.list')}}">Transmissions</a>
         <p class="text-3xl font-bold text-yellow-500">{{ $transmissions }}</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">

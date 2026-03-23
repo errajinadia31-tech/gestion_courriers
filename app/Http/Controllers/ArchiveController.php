@@ -26,9 +26,4 @@ class ArchiveController extends Controller
         return back()->with('success', 'Courrier archivé!');
     }
 
-    public function destroy(Archive $archive)
-    {
-        $archive->delete();
-        return back()->with('success', 'Archive supprimée!');
-    }
 }

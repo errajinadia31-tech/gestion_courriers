@@ -66,68 +66,67 @@
 
                     <td class="px-4 py-2 whitespace-nowrap">
                         @if($courrier->file)
-                            @php $extension = pathinfo($courrier->file, PATHINFO_EXTENSION); @endphp
-                            @if(in_array(strtolower($extension), ['jpg','jpeg','png','gif']))
-                                <img src="{{ asset('storage/' . $courrier->file) }}" alt="image" class="h-12 w-auto rounded shadow-sm border border-gray-100">
-                            @else
-                                <span class="inline-flex items-center text-red-600 font-bold text-xs uppercase">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path></svg>
-                                    PDF
-                                </span>
-                            @endif
+                        @php $extension = pathinfo($courrier->file, PATHINFO_EXTENSION); @endphp
+                        @if(in_array(strtolower($extension), ['jpg','jpeg','png','gif']))
+                        <img src="{{ asset('storage/' . $courrier->file) }}" alt="image" class="h-12 w-auto rounded shadow-sm border border-gray-100">
                         @else
-                            <span class="text-gray-400 text-xs italic">Aucun file</span>
+                        <span class="inline-flex items-center text-red-600 font-bold text-xs uppercase">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path>
+                            </svg>
+                            PDF
+                        </span>
+                        @endif
+                        @else
+                        <span class="text-gray-400 text-xs italic">Aucun file</span>
                         @endif
                     </td>
 
-               <td class="px-4 py-2 text-center text-sm font-medium flex flex-col space-y-2 items-center">
-    <a href="{{ route('show.view', $courrier->id_courrier) }}" class="text-blue-600 hover:text-blue-900 font-bold">Voir</a>
-    <a href="{{ route('courrier.edit', $courrier->id_courrier) }}" class="text-yellow-500 font-bold hover:underline">Modifier</a>
-<!-- Bouton pour ouvrir le modal -->
-<button
-    type="button"
-    onclick="openModal()"
-    class="text-red-600 font-bold hover:underline"
->
-    Supprimer
-</button>
+                    <td class="px-4 py-2 text-center text-sm font-medium flex flex-col space-y-2 items-center">
+                        <a href="{{ route('show.view', $courrier->id_courrier) }}" class="text-blue-600 hover:text-blue-900 font-bold">Voir</a>
+                        <a href="{{ route('courrier.edit', $courrier->id_courrier) }}" class="text-yellow-500 font-bold hover:underline">Modifier</a>
 
-<!-- Modal -->
-<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-4">Confirmer la suppression</h3>
-        <p class="mb-6">Voulez-vous vraiment supprimer ce courrier ? Cette action est irréversible.</p>
-        <div class="flex justify-end gap-3">
-            <button
-                onclick="closeModal()"
-                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-            >
-                Annuler
-            </button>
-            <form action="{{ route('courrier.destroy', $courrier->id_courrier) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button
-                    type="submit"
-                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                >
-                    Supprimer
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+                        <button
+                            type="button"
+                            onclick="openModal()"
+                            class="text-red-600 font-bold hover:underline">
+                            Supprimer
+                        </button>
 
-<script>
-    function openModal() {
-        document.getElementById('deleteModal').classList.remove('hidden');
-    }
 
-    function closeModal() {
-        document.getElementById('deleteModal').classList.add('hidden');
-    }
-</script>
-</td>
+                        <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                            <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+                                <h3 class="text-lg font-semibold mb-4">Confirmer la suppression</h3>
+                                <p class="mb-6">Voulez-vous vraiment supprimer ce courrier ? Cette action est irréversible.</p>
+                                <div class="flex justify-end gap-3">
+                                    <button
+                                        onclick="closeModal()"
+                                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                                        Annuler
+                                    </button>
+                                    <form action="{{ route('courrier.destroy', $courrier->id_courrier) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            type="submit"
+                                            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            function openModal() {
+                                document.getElementById('deleteModal').classList.remove('hidden');
+                            }
+
+                            function closeModal() {
+                                document.getElementById('deleteModal').classList.add('hidden');
+                            }
+                        </script>
+                    </td>
                 </tr>
                 @empty
                 <tr>
