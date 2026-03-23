@@ -80,17 +80,54 @@
                         @endif
                     </td>
 
-                    <td class="px-4 py-2 text-center text-sm font-medium space-x-2">
-                        <a href="{{ route('show.view', $courrier->id_courrier) }}" class="text-blue-600 hover:text-blue-900 font-bold">Voir</a>
-                        <a href="{{ route('courrier.edit', $courrier->id_courrier) }}" class="text-yellow-500 font-bold hover:underline">Modifier</a>
-                        <form action="{{ route('courrier.destroy', $courrier->id_courrier) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Voulez-vous vraiment supprimer ?')" class="text-red-600 font-bold hover:underline">
-                                Supprimer
-                            </button>
-                        </form>
-                    </td>
+               <td class="px-4 py-2 text-center text-sm font-medium flex flex-col space-y-2 items-center">
+    <a href="{{ route('show.view', $courrier->id_courrier) }}" class="text-blue-600 hover:text-blue-900 font-bold">Voir</a>
+    <a href="{{ route('courrier.edit', $courrier->id_courrier) }}" class="text-yellow-500 font-bold hover:underline">Modifier</a>
+<!-- Bouton pour ouvrir le modal -->
+<button
+    type="button"
+    onclick="openModal()"
+    class="text-red-600 font-bold hover:underline"
+>
+    Supprimer
+</button>
+
+<!-- Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Confirmer la suppression</h3>
+        <p class="mb-6">Voulez-vous vraiment supprimer ce courrier ? Cette action est irréversible.</p>
+        <div class="flex justify-end gap-3">
+            <button
+                onclick="closeModal()"
+                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            >
+                Annuler
+            </button>
+            <form action="{{ route('courrier.destroy', $courrier->id_courrier) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                    Supprimer
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+</script>
+</td>
                 </tr>
                 @empty
                 <tr>

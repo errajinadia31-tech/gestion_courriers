@@ -54,4 +54,5 @@ Route::put('/courrier/{id}', [CourrierController::class, 'update'])->name('courr
 Route::get('custom', [LayoutController::class, 'layout'])->name('layout');
 Route::get('/ajouter', [LayoutController::class, 'ajouter'])->name('ajouter');
 
+
 require __DIR__.'/auth.php';

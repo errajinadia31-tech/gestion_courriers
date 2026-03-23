@@ -11,6 +11,7 @@
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="shortcut icon" href="{{ asset('image/icon.ico') }}" type="image/x-icon">
 
     <title>GEC - Gestion de Courrier</title>
 </head>

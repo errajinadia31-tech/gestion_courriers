@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEC - Gestion de Courrier</title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="shortcut icon" href="{{ asset('image/icon.ico') }}" type="image/x-icon">
+
 </head>
 <body class="bg-cover bg-center bg-gray-100" style="background-image: url('{{ asset("image/bg_maroc.png") }}'); font-family: 'Poppins', sans-serif;">
 
