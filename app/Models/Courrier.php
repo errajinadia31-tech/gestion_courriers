@@ -7,7 +7,7 @@ use App\Models\User;
 
 class Courrier extends Model
 {
-    protected $primaryKey = 'id_courrier'; 
+    protected $primaryKey = 'id_courrier';
 
     public $incrementing = true; 
     protected $keyType = 'int'; 
@@ -29,5 +29,9 @@ class Courrier extends Model
     public function transmissions()
 {
     return $this->hasMany(Transmission::class, 'courrier_id', 'id_courrier');
+}
+public function archive()
+{
+    return $this->hasOne(Archive::class, 'courrier_id', 'id_courrier');
 }
 }

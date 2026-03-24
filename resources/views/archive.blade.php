@@ -17,6 +17,7 @@
             <table class="w-full bg-white rounded shadow">
                 <thead>
                     <tr class="bg-blue-600 text-left">
+                        <th class="p-3">Reference</th>
                         <th class="p-3">Objet</th>
                         <th class="p-3">Archivé par</th>
                         <th class="p-3">Date d'archivage</th>
@@ -27,6 +28,7 @@
                 <tbody>
                     @forelse($archives as $archive)
                     <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">{{ $archive->courrier->reference }}</td>
                         <td class="p-3">{{ $archive->courrier->objet }}</td>
                         <td class="p-3">{{ $archive->user->name }}</td>
                         <td class="p-3">{{ \Carbon\Carbon::parse($archive->date_archivage)->format('d/m/Y') }}</td>

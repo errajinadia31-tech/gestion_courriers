@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Nadia Erraji - Full-stack Developer / Acteur">
+    <meta name="role" content="Developer">
     <title>@yield('title', config('app.name', 'GEC'))</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="shortcut icon" href="{{ asset('image/icon.ico') }}" type="image/x-icon">
 </head>
 
-<body class="flex h-screen font-poppins bg-gray-100">
+<body class="flex h-screen  bg-gray-100">
 
     <!-- Sidebar -->
     <aside class="w-64 bg-indigo-700 text-white flex flex-col h-screen">
@@ -24,7 +25,7 @@
             <a href="{{ route('dashboard') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('dashboard') ? 'bg-indigo-800' : '' }}">
                 <i class="fa-solid fa-house ml-2"></i> Dashboard
             </a>
-            <a href="{{ route('courrier') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('courriers.*') ? 'bg-indigo-800' : '' }}">
+            <a href="{{ route('courrier') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('courrier') ? 'bg-indigo-800' : '' }}">
                 <i class="fa-solid fa-file ml-2"></i> Courriers
             </a>
             <a href="{{ route('transmissions.list') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('transmissions.*') ? 'bg-indigo-800' : '' }}">
@@ -35,10 +36,10 @@
             </a>
         </nav>
 
-        <footer class="mt-auto text-xs pb-4 text-center text-white">
-            &copy; {{ date('Y') }} GEC - Gestion de Courrier. All rights reserved.
-            <a href="#" class="text-blue-400 hover:underline">Privacy Policy</a>
-        </footer>
+      <footer class="mt-auto text-xs pb-4 text-center text-white">
+    &copy; {{ date('Y') }} GEC - Gestion de Courrier. All rights reserved.
+    <a href="#" class="text-blue-400 hover:underline">Privacy Policy </a> <br>
+</footer>
     </aside>
 
     <!-- Main -->
@@ -61,7 +62,6 @@
             </div>
         </form>
 
-        <!-- User Dropdown -->
         <div class="relative inline-block text-left">
             <button type="button"
                 class="inline-flex justify-center items-center px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
@@ -85,7 +85,7 @@
         </div>
     </div>
 
-    <!-- Logout Modal -->
+
     <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-xl shadow-lg w-96 p-6 text-center relative">
             <h2 class="text-lg font-semibold text-gray-700 mb-4">Se déconnecter</h2>
