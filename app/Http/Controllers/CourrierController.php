@@ -29,7 +29,8 @@ public function index(Request $request)
             $q->where('reference', 'LIKE', "%$search%")
               ->orWhere('objet', 'LIKE', "%$search%")
               ->orWhere('expediteur', 'LIKE', "%$search%")
-              ->orWhere('destinataire_externe', 'LIKE', "%$search%");
+              ->orWhere('destinataire_externe', 'LIKE', "%$search%")
+              ->orWhere('date', 'LIKE', "%$search%");
         });
     }
 
