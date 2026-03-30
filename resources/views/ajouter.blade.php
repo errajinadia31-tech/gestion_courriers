@@ -40,28 +40,30 @@
                         <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
                             Objet <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="objet" placeholder="Objet du courrier" required
-                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:border-blue-500 outline-none text-gray-700">
+<textarea name="objet" placeholder="Objet du courrier" required
+    rows="4"
+    style="text-align: justify;"
+    class="w-full border border-gray-200 rounded-lg px-4 py-2.5 
+           focus:border-blue-500 outline-none text-gray-700 resize-none">{{ old('objet') }}</textarea>
                     </div>
 
-                    <!-- Date d'envoi -->
-                    <div class="flex flex-col">
-                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
-                            Date d'envoi <span class="text-red-500">*</span>
-                        </label>
-                        <input type="date" name="date" required
-                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:border-blue-500 outline-none text-gray-500">
-                    </div>
+<!-- Date d'envoi -->
+<div class="flex flex-col">
+ <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+  Date d'envoi <span class="text-red-500">*</span>
+ </label>
+ <input type="date" name="date" required id="date_envoi"
+  class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:border-blue-500 outline-none text-gray-500">
+</div>
 
-                    <!-- Date de réception -->
-                    <div class="flex flex-col">
-                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
-                            Date de réception
-                        </label>
-                        <input type="date" name="date_reception"
-                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:border-blue-500 outline-none text-gray-500">
-                    </div>
-
+<!-- Date de réception -->
+<div class="flex flex-col">
+ <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+  Date de réception
+ </label>
+ <input type="date" name="date_reception" id="date_reception"
+  class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:border-blue-500 outline-none text-gray-500">
+</div>
                     <!-- Statut -->
                     <div class="flex flex-col">
                         <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Statut</label>
@@ -74,17 +76,18 @@
                     </div>
 
                     <!-- Utilisateur -->
-                    <div class="flex flex-col">
-                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Utilisateur</label>
-                        <select name="user_id"
-                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white focus:border-blue-500 outline-none text-gray-700">
-                            @forelse($users ?? [] as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @empty
-                                <option disabled selected>Aucun utilisateur disponible</option>
-                            @endforelse
-                        </select>
-                    </div>
+                <div class="flex flex-col">
+    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+        Utilisateur
+    </label>
+    
+    <input type="text" 
+        value="{{ auth()->user()->name }}" 
+        readonly
+        class="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-gray-50 outline-none text-gray-700 cursor-not-allowed font-medium">
+
+    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+</div>
 
                     <!-- Expéditeur + Emplacement côte à côte -->
                     <div class="md:col-span-2 flex flex-row gap-4 mt-2">
@@ -196,5 +199,39 @@
             fileNameDisplay.textContent = "Aucun";
         }
     });
+
+const dateEnvoi = document.getElementById('date_envoi');
+
+const today = new Date();
+
+dateEnvoi.max = today.toISOString().split('T')[0];
+
+dateEnvoi.addEventListener('input', () => {
+    const selectedDate = new Date(dateEnvoi.value);
+    const day = selectedDate.getDay();
+
+    if (day === 0 || day === 6) {
+        alert('Weekends are not allowed!');
+        dateEnvoi.value = '';
+    }
+});
+
+
+const dateReception = document.getElementById('date_reception');
+
+const maxDate = new Date();
+
+dateReception.max = maxDate.toISOString().split('T')[0];
+
+dateReception.addEventListener('input', () => {
+    const selectedDate = new Date(dateReception.value);
+    const day = selectedDate.getDay();
+
+    if (day === 0 || day === 6) {
+        alert('Weekends are not allowed!');
+        dateReception.value = '';
+    }
+});
+
 </script>
 @endsection

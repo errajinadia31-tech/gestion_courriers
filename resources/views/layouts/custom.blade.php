@@ -8,7 +8,7 @@
     <meta name="role" content="Developer">
     <title>@yield('title', config('app.name', 'GEC'))</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+   
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="shortcut icon" href="{{ asset('image/icon.ico') }}" type="image/x-icon">
@@ -19,7 +19,7 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-indigo-700 text-white flex flex-col h-screen">
         <div class="flex px-6 py-3">
-            <img src="{{ asset('image/logo.png') }}" alt="logo" class="h-10 w-auto">
+            <a href="{{ route('dashboard') }}"><img src="{{ asset('image/logo.png') }}" alt="logo" class="h-10 w-auto"></a>
         </div>
         <nav class="flex-1 p-4 space-y-2">
             <a href="{{ route('dashboard') }}" class="block p-3 rounded hover:bg-indigo-800 {{ request()->routeIs('dashboard') ? 'bg-indigo-800' : '' }}">

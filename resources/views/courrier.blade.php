@@ -36,9 +36,9 @@
                 <tr class="hover:bg-gray-50 transition">
                     <td class="px-4 py-2 whitespace-nowrap text-gray-900 font-medium">{{ $courrier->reference }}</td>
 
-                    <td class="px-4 py-2 whitespace-nowrap text-gray-700 max-w-xs truncate" title="{{ $courrier->objet }}">
-                        {{ $courrier->objet }}
-                    </td>
+                   <td class="px-4 py-2 text-gray-700 max-w-xs text-justify break-words">
+    {{ $courrier->objet }}
+</td>
 
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-600 italic">{{ $courrier->type }}</td>
 

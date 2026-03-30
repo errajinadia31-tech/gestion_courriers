@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="flex justify-end mb-6">
-           <a href="{{ route('ajouter') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Nouveau courrier</a>
+    <a href="{{ route('ajouter') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Nouveau courrier</a>
 
 </div>
 
@@ -19,7 +19,7 @@
         <p class="text-3xl font-bold text-green-600">{{ $courriersArrives }}</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        
+
         <a href="{{ route('transmissions.list')}}">Transmissions</a>
         <p class="text-3xl font-bold text-yellow-500">{{ $transmissions }}</p>
     </div>
@@ -42,14 +42,16 @@
             </thead>
             <tbody>
                 @forelse($lastCourriers as $courrier)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-3">{{ $courrier->objet }}</td>
-                        <td class="p-3">{{ $courrier->created_at->format('d/m/Y') }}</td>
-                    </tr>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-2 text-gray-700 max-w-xs text-justify break-words">
+                        {{ $courrier->objet }}
+                    </td>
+                    <td class="p-3">{{ $courrier->created_at->format('d/m/Y') }}</td>
+                </tr>
                 @empty
-                    <tr>
-                        <td class="p-3" colspan="2">Aucun courrier trouvé</td>
-                    </tr>
+                <tr>
+                    <td class="p-3" colspan="2">Aucun courrier trouvé</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

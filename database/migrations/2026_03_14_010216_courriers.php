@@ -12,8 +12,7 @@ Schema::create('courriers', function (Blueprint $table) {
     $table->id('id_courrier');
 
     $table->string('reference');
-    $table->string('objet');
-
+$table->text('objet');
     $table->enum('type', ['arrivee','depart']);
 
     $table->date('date');
