@@ -34,7 +34,6 @@
                         <td class="p-3">{{ \Carbon\Carbon::parse($archive->date_archivage)->format('d/m/Y') }}</td>
                         <td class="p-3">{{ $archive->emplacement }}</td>
                         <td class="p-3 flex gap-2">
-                            <!-- Bouton Restaurer -->
 <button
     type="button"
     onclick="openRestoreModal()"
@@ -43,7 +42,6 @@
     Restaurer
 </button>
 
-<!-- Modal Restaurer -->
 <div id="restoreModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
         <h3 class="text-lg font-semibold mb-4">Confirmer la restauration</h3>
@@ -55,34 +53,50 @@
             >
                 Annuler
             </button>
-            <form action="{{ route('courrier.restore', $archive->courrier->id_courrier) }}" method="POST">
+          <form action="{{ route('courrier.restore', $archive->courrier->id_courrier) }}" method="POST">
+    @csrf
+    @method('PUT')
+    <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+        Restaurer
+    </button>
+</form>
+        </div>
+    </div>
+</div>
+
+
+<button
+    type="button"
+    onclick="openDeleteModal({{ $archive->id_archive }})"
+    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+>
+    Supprimer
+</button>
+
+<!-- Modal Supprimer -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Confirmer la suppression</h3>
+        <p class="mb-6">Voulez-vous vraiment supprimer ce courrier archivé ?</p>
+        <div class="flex justify-end gap-3">
+            <button
+                onclick="closeDeleteModal()"
+                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            >
+                Annuler
+            </button>
+            <form id="deleteForm" action="" method="POST">
                 @csrf
-                @method('PUT')
-                <button
-                    type="submit"
-                    class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                >
-                    Restaurer
+                @method('DELETE')
+                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Supprimer
                 </button>
             </form>
         </div>
     </div>
 </div>
 
-<script>
-    function openRestoreModal() {
-        document.getElementById('restoreModal').classList.remove('hidden');
-    }
 
-    function closeRestoreModal() {
-        document.getElementById('restoreModal').classList.add('hidden');
-    }
-</script>
-                            <form action="{{ route('archive.destroy', $archive->id_archive) }}" method="POST" onsubmit="return confirm('Vraiment supprimer?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Supprimer</button>
-                            </form>
                         </td>
                     </tr>
                     @empty
@@ -94,9 +108,35 @@
             </table>
         </div>
 
-        <div class="mt-4">
-            {{ $archives->links() }}
-        </div>
+       
     </div>
+<script>
+    function openRestoreModal() {
+        document.getElementById('restoreModal').classList.remove('hidden');
+    }
 
+    function closeRestoreModal() {
+        document.getElementById('restoreModal').classList.add('hidden');
+    }
+
+    function openDeleteModal(id) {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('hidden');
+
+        const form = document.getElementById('deleteForm');
+        form.action = '/archive/' + id; 
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+
+    function openRestoreModal() {
+        document.getElementById('restoreModal').classList.remove('hidden');
+    }
+
+    function closeRestoreModal() {
+        document.getElementById('restoreModal').classList.add('hidden');
+    }
+</script>
 @endsection

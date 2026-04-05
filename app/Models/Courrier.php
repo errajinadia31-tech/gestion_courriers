@@ -13,7 +13,7 @@ class Courrier extends Model
     protected $keyType = 'int'; 
 
     protected $fillable = [
-        'reference', 'objet', 'type', 'date','statut', 'type_document',
+        'reference', 'objet', 'annee', 'statut' ,'type', 'date','statut', 'type_document',
         'expediteur', 'destinataire_externe', 'mode_envoi', 'file', 'user_id'
     ];
 

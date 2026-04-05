@@ -12,6 +12,7 @@ Schema::create('courriers', function (Blueprint $table) {
     $table->id('id_courrier');
 
     $table->string('reference');
+    $table->integer('annee');
 $table->text('objet');
     $table->enum('type', ['arrivee','depart']);
 
@@ -33,6 +34,9 @@ $table->text('objet');
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
     $table->timestamps();
+
+    $table->unique(['annee', 'reference']);
+
 });
     }
 

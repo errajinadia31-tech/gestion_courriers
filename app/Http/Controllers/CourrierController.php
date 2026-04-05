@@ -51,7 +51,7 @@ class CourrierController extends Controller
             $number = 1;
         }
 
-        $nextRef = 'N°'.$number;
+        $nextRef = $number;
 
         return view('ajouter', compact('users', 'nextRef'));
     }
@@ -66,6 +66,7 @@ class CourrierController extends Controller
         $data = $request->validate([
             'reference' => 'required|string|max:255|unique:courriers,reference',
             'objet' => 'required|string|max:255',
+            'annee' => 'required|integer',
             'type' => 'required|in:arrivee,depart',
             'date' => 'required|date',
             'statut' => 'required|in:En cours,Traité,Archivé',
@@ -78,13 +79,30 @@ class CourrierController extends Controller
             'emplacement' => 'nullable|string',
         ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $reference = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $data['reference']);
-            $fileName = $reference.'_'.time().'.'.$extension;
-            $data['file'] = $file->storeAs('courriers', $fileName, 'public');
-        }
+    if ($request->hasFile('file')) {
+    $file = $request->file('file');
+
+    $extension = $file->getClientOriginalExtension();
+
+    $reference = preg_replace('/[^a-zA-Z0-9_-]/', '', $data['reference']);
+
+    $date = date('Y-m-d', strtotime($data['date']));
+
+    $fileName = $reference . '_' . $date . '.' . $extension;
+
+    $data['file'] = $file->storeAs('courriers', $fileName, 'public');
+}
+
+$data['user_id'] = $data['user_id'] ?? Auth::id();
+
+if ($data['type'] === 'arrivee') {
+    $data['destinataire_externe'] = null;
+    $data['mode_envoi'] = null;
+}
+
+if ($data['type'] === 'depart') {
+    $data['expediteur'] = null;
+}
 
         $data['user_id'] = $data['user_id'] ?? Auth::id();
 
@@ -119,6 +137,11 @@ class CourrierController extends Controller
 
         $courrier->delete();
 
+        if ($courrier->file && Storage::disk('public')->exists($courrier->file)) {
+        Storage::disk('public')->delete($courrier->file);
+    }
+
+
         return redirect()->back()->with('success', 'Courrier supprimé avec succès');
     }
 
@@ -148,59 +171,60 @@ class CourrierController extends Controller
         return view('edit_courrier', compact('courrier', 'users'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $courrier = Courrier::findOrFail($id);
+  public function update(Request $request, $id)
+{
+    $courrier = Courrier::findOrFail($id);
 
-        $data = $request->validate([
-            'reference' => 'required|string|max:255|unique:courriers,reference,'.$id.',id_courrier',
-            'objet' => 'required|string|max:255',
-            'type' => 'required|in:arrivee,depart',
-            'date' => 'required|date',
-            'statut' => 'required|in:En cours,Traité,Archivé',
-            'type_document' => 'nullable|string',
-            'expediteur' => 'nullable|string',
-            'destinataire_externe' => 'nullable|string',
-            'mode_envoi' => 'nullable|in:email,poste',
-            'user_id' => 'nullable|exists:users,id',
-            'file' => 'nullable|file|mimes:pdf|max:2048',
-        ]);
+    $data = $request->validate([
+        'reference' => 'required|string|max:255|unique:courriers,reference,'.$id.',id_courrier',
+        'objet' => 'required|string|max:255',
+        'type' => 'required|in:arrivee,depart',
+        'date' => 'required|date',
+        'statut' => 'required|in:En cours,Traité,Archivé',
+        'type_document' => 'nullable|string',
+        'expediteur' => 'nullable|string',
+        'destinataire_externe' => 'nullable|string',
+        'mode_envoi' => 'nullable|in:email,poste',
+        'user_id' => 'nullable|exists:users,id',
+        'file' => 'nullable|file|mimes:pdf|max:2048',
+        'emplacement' => 'nullable|string', 
+    ]);
 
-        if ($request->hasFile('file')) {
-            if ($courrier->file) {
-                Storage::disk('public')->delete($courrier->file);
-            }
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $reference = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $data['reference']);
-            $fileName = $reference.'_'.time().'.'.$extension;
-            $data['file'] = $file->storeAs('courriers', $fileName, 'public');
+    if ($request->hasFile('file')) {
+        if ($courrier->file) {
+            Storage::disk('public')->delete($courrier->file);
         }
-
-        if ($data['type'] === 'arrivee') {
-            $data['destinataire_externe'] = null;
-            $data['mode_envoi'] = null;
-        } elseif ($data['type'] === 'depart') {
-            $data['expediteur'] = null;
-        }
-    
-        $courrier->update($data);
-
-        return redirect()->route('courrier')->with('success', 'Courrier mis à jour');
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $reference = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $data['reference']);
+        $fileName = $reference.'_'.time().'.'.$extension;
+        $data['file'] = $file->storeAs('courriers', $fileName, 'public');
     }
 
-    public function restore(Courrier $courrier)
-    {
-        $archive = Archive::where('courrier_id', $courrier->id_courrier)->first();
 
-        if (! $archive) {
-            return redirect()->back()->with('error', 'Ce courrier n\'est pas archivé');
-        }
-
-        $archive->delete();
-
-        $courrier->update(['statut' => 'En cours']);
-
-        return redirect()->route('courrier')->with('success', 'Courrier restauré avec succès');
+    if ($data['type'] === 'arrivee') {
+        $data['destinataire_externe'] = null;
+        $data['mode_envoi'] = null;
+    } elseif ($data['type'] === 'depart') {
+        $data['expediteur'] = null;
     }
+
+    $courrier->update($data);
+
+    if ($data['statut'] === 'Archivé') {
+        $exists = Archive::where('courrier_id', $courrier->id_courrier)->exists();
+        if (! $exists) {
+            Archive::create([
+                'courrier_id' => $courrier->id_courrier,
+                'user_id' => auth()->id(),
+                'date_archivage' => now(),
+                'emplacement' => $data['emplacement'] ?? 'Armoire A',
+            ]);
+        }
+    } else {
+        Archive::where('courrier_id', $courrier->id_courrier)->delete();
+    }
+
+    return redirect()->route('courrier')->with('success', 'Courrier mis à jour avec succès');
+}
 }

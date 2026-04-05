@@ -49,15 +49,10 @@
                     <img src="{{ asset('storage/' . $courrier->file) }}" class="w-full rounded border border-gray-200 shadow-sm hover:opacity-90 transition">
                 </a>
                 @elseif(strtolower($ext) == 'pdf')
-                <div class="border border-red-200 rounded p-3 bg-red-50 flex flex-col items-center">
-                    <svg class="w-12 h-12 text-red-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path>
-                    </svg>
-                    <p class="text-red-700 text-sm mb-2">Document PDF</p>
-                    <a href="{{ asset('storage/' . $courrier->file) }}" target="_blank" class="bg-red-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-red-700">
-                        Ouvrir / Consulter
-                    </a>
-                </div>
+            <div class="w-full h-[200px] border rounded">
+    <object data="{{ asset('storage/' . $courrier->file) }}" type="application/pdf" width="100%" height="100%">
+    </object>
+</div>
                 @endif
                 @else
                 <p class="italic text-gray-400">Aucun fichier attaché.</p>
@@ -65,29 +60,27 @@
             </div>
         </div>
 
-        <div class="bg-gray-100 px-6 py-3 flex justify-between rounded-b-lg">
+        <div class="bg-gray-100 px-6 py-3 flex justify-between rounded-b-lg items-center">
             <a href="{{ route('courrier') }}" class="text-gray-700 hover:text-gray-900 hover:underline font-medium">Retour</a>
             <div class="flex items-center gap-2">
-                <a href="{{ route('courrier.edit', $courrier->id_courrier) }}" class="bg-yellow-400 text-black px-4 py-2 rounded shadow hover:bg-yellow-500 font-semibold">Modifier</a>
-                <form action="{{ route('courrier.archive',$courrier->id_courrier) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="text-white hover:bg-blue-700 px-4 py-2 text-bold rounded bg-blue-600">
-                        Archiver
-                    </button>
-                </form>
+<form action="{{ route('courrier.archive', $courrier->id_courrier) }}" method="POST">
+    @csrf
+    @method('PUT') 
+    <button type="submit" class="text-white hover:bg-blue-700 px-4 py-2 font-bold rounded bg-blue-600">
+        Archiver
+    </button>
+</form>
+<a href="{{ route('print', $courrier->id_courrier) }}" target="_blank">
+    <button class="bg-orange-600 text-white px-4 py-2 font-bold rounded hover:bg-orange-700">Imprimer PDF</button>
+</a>
+<a href="{{ route('courrier.download', $courrier->id_courrier) }}">
+    <button class="bg-green-600 text-white px-4 py-2 font-bold rounded hover:bg-green-700">Télécharger PDF</button>
+</a>
             </div>  
         </div>
         <div class="mt-6 p-4 border rounded shadow">
     <h2 class="text-xl font-semibold mb-3 text-blue-600">Ajouter une transmission</h2>
 
-    @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-2 rounded mb-4">{{ session('success') }}</div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 text-red-700 p-2 rounded mb-4">{{ session('error') }}</div>
-    @endif
 
     <form action="{{ route('transmissions.store') }}" method="POST">
         @csrf
@@ -125,4 +118,4 @@
     </form>
 </div>
 </div>
-@endsection
+@endsection 

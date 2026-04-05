@@ -3,7 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\CourrierController;
+use App\Http\Controllers\CourrierPrintController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LayoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransmissionController;
@@ -27,12 +29,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // Archive
+
 Route::middleware('auth')->group(function () {
-    Route::get('/archive', [ArchiveController::class, 'archive'])->name('archive');
-    Route::post('/archive/{courrier}', [ArchiveController::class, 'store'])->name('archive.store');
+    // Liste des archives
+    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive');
+
+    // Archiver un courrier
+    Route::put('/courrier/{courrier}/archive', [ArchiveController::class, 'archive'])->name('courrier.archive');
+
+    // Supprimer une archive
     Route::delete('/archive/{archive}', [ArchiveController::class, 'destroy'])->name('archive.destroy');
 });
-
 // Courrier
 Route::middleware('auth')->group(function () {
 
@@ -58,10 +65,10 @@ Route::get('custom', [LayoutController::class, 'layout'])->name('layout');
 Route::get('/ajouter', [CourrierController::class, 'ajouter'])->name('ajouter');
 
 //  Archive
-Route::put('/courrier/{courrier}/archive', [CourrierController::class, 'archive'])
+Route::put('/courrier/{courrier}/archive', [ArchiveController::class, 'archive'])
     ->name('courrier.archive');
-    Route::put('/courrier/{courrier}/restore', [CourrierController::class, 'restore'])->name('courrier.restore');
-
+Route::put('/courrier/{courrier}/restore', [ArchiveController::class, 'restore'])->name('courrier.restore');
+Route::delete('/archive/{archive}', [ArchiveController::class, 'destroy'])->name('archive.destroy');
 
 Route::middleware('auth')->group(function () {
 Route::get('/transmissions', [TransmissionController::class, 'list'])->name('transmissions.list');
@@ -69,5 +76,12 @@ Route::get('/transmissions', [TransmissionController::class, 'list'])->name('tra
     Route::post('/transmissions', [TransmissionController::class, 'store'])->name('transmissions.store');
     Route::delete('/transmissions/{transmission}', [TransmissionController::class, 'destroy'])->name('transmissions.destroy');
 });
+
+
+// send mail
+Route::get('/email', [EmailController::class, 'sendEmail'])->name('email');
+
+Route::get('/print/{id}', [CourrierPrintController::class, 'print'])->name('print');
+Route::get('/download/{id}', [CourrierPrintController::class, 'download'])->name('courrier.download');
 
 require __DIR__.'/auth.php';
